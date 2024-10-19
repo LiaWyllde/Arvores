@@ -3,7 +3,6 @@ package model;
 public class Tree<T extends Comparable<T>> {
 	
 	private Node<T> raiz;
-	private int qt;
 	
 	public Tree() {
 		this.raiz = null;
