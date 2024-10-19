@@ -102,7 +102,6 @@ public class Tree<T extends Comparable<T>> {
 
 	public Node<T> remove(T elemento, Node<T> raiz) {
 	//1 vrifica se o nó é nulo
-		
 		if (raiz == null) {
 			return raiz;
 		}
@@ -112,33 +111,24 @@ public class Tree<T extends Comparable<T>> {
 			//se o elemento da raiz for menor, esquerda
 			raiz.setEsquerda(remove(elemento, raiz.getEsquerda()));
 			//esse código reconstrói a árvore, o théo jurou
-			
 		} else if (raiz.getElemento().compareTo(elemento) < 0) {
 			//se o elemento da raiz for maior, direita
 			raiz.setDireita(remove(elemento, raiz.getDireita()));
-			
 		} else {
-			
 			//aqui a gente de fato mexe com o elemento
-			
 			if (raiz.getEsquerda() == null && raiz.getDireita() == null) {
 				return null; //(if da visão transcedental)
 				//se esse nó é uma folha, o nó anterior (pai) não aponta para nada
 			} else if (raiz.getEsquerda() == null) {
 				return raiz.getDireita();
-				
 				/*
 				 * se o nó não é vazio dos dois lados e não tem nada na esquerda ele 
 				 * possui algo na direita, por isso o retono direto
 				 */
-				
 			} else if (raiz.getDireita() == null) {
 				return raiz.getEsquerda(); 
-				
 				//mesma coisa aqui, mas para o outro lado
-				
 			} else {
-				
 				var substitute = this.min(raiz.getDireita());
 				
 				/*
@@ -149,7 +139,6 @@ public class Tree<T extends Comparable<T>> {
 				 */
 				
 				raiz.setElemento(substitute.getElemento());
-				
 				raiz.setDireita(remove(substitute.getElemento(), raiz.getDireita()));
 			}
 		} 
@@ -174,5 +163,4 @@ public class Tree<T extends Comparable<T>> {
 	 public void showRaiz() {
 		System.out.println(this.raiz.getElemento().toString());
 	}
-	 
 }
