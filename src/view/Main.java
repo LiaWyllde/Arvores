@@ -41,7 +41,7 @@ public class Main {
 		arvore.showRaiz();
 		System.out.println("\n");
 		
-		arvore.chamaRemove(180);
+		arvore.remove(200, arvore.getRaiz());
 		
 		System.out.println("\nRemovido");
 		arvore.chamaOrdem();
