@@ -3,7 +3,6 @@ package model;
 public class Tree<T extends Comparable<T>> {
 	
 	private Node<T> raiz;
-	private int qt;
 	
 	public Tree() {
 		this.raiz = null;
@@ -12,6 +11,10 @@ public class Tree<T extends Comparable<T>> {
 	public void chamaAdiciona(T e) {
 		Node<T> no = new Node<T>(e);
 		adicionar(no, raiz);
+	}
+	
+	public Node<T> getRaiz(){
+		return this.raiz;
 	}
 
 	/*
@@ -42,7 +45,6 @@ public class Tree<T extends Comparable<T>> {
 					adicionar(no, noDois);
 				} else {
 					noDois.setDireita(no);
-					++qt;
 				}
 			} else {
 				//não faz sentido tratar o 0 e -1 pq os dois vão pra esquerda
@@ -51,7 +53,6 @@ public class Tree<T extends Comparable<T>> {
 					adicionar(no, noDois);
 				} else { 
 					noDois.setEsquerda(no);
-					++qt; 
 				}
 			}
 		}
@@ -90,94 +91,159 @@ public class Tree<T extends Comparable<T>> {
 		}
 	}
 	
-	public void chamaRemove(T e) {
-		Node<T> no = new Node<T>(e);
-		if (no.getElemento().compareTo(this.raiz.getElemento()) == 0) {
-			
-		} else {
-			no = verifica(no, this.raiz);
-			if (no == null) {
-				System.out.println("\nO elemento não está na lista");
-			} else {
-				System.out.println("\nO elemento " + no.getElemento().toString() + " está na lista");
-				remove(no);
-			}
+	//Encontra o menor valor na árvore
+	private Node<T> min(Node<T> no) {
+		Node<T> min = no;
+		while (min.getEsquerda() != null) {
+			min = min.getEsquerda();
 		}
-	}
-	
-	 private void remove(Node<T> no) {
-			Node<T> paiDoNo = paiDoNo(no, this.raiz);
-			System.out.println("Pai: " + paiDoNo.getElemento().toString());
-			
-			if (no.getDireita() == null && no.getEsquerda() == null) {
-				if (no.getElemento().compareTo(paiDoNo.getElemento()) >= 0) {
-					paiDoNo.setDireita(null);
-				} else {
-					paiDoNo.setEsquerda(null);
-				}
-			} else if (no.getDireita() != null && no.getEsquerda() != null) {
-				
-			} else {
-				if (no.getDireita() != null) {
-					if (no.getElemento().compareTo(paiDoNo.getElemento()) >= 0) {
-						paiDoNo.setDireita(no.getDireita());
-					} else {
-						paiDoNo.setEsquerda(no.getEsquerda());
-					}
-				} else {
-					if (no.getElemento().compareTo(paiDoNo.getElemento()) >= 0) {
-						paiDoNo.setDireita(no.getDireita());
-					} else {
-						paiDoNo.setEsquerda(no.getEsquerda());
-					}
-				}
-			}
-	}
-	 
-	private Node<T> paiDoNo(Node<T> no, Node<T> paiDoNo) {
-		if (no.getElemento().compareTo(paiDoNo.getElemento()) >= 0) {
-			if (paiDoNo.getDireita() == no) {
-				return paiDoNo;
-			} else {
-				paiDoNo = paiDoNo.getDireita();
-				return paiDoNo(no, paiDoNo);
-			}
-		} else {
-			if (paiDoNo.getEsquerda() == no) {
-				return paiDoNo;
-			} else {
-				paiDoNo = paiDoNo.getEsquerda();
-				return paiDoNo(no, paiDoNo);
-			}
-		}
-		
+		return min;
 	}
 
-	private Node<T> verifica(Node<T> no, Node<T> noNaPosicao) {
-		if (no.getElemento().compareTo(noNaPosicao.getElemento()) >= 0) {
-			if (noNaPosicao.getDireita() == null) {
-				return null;
-			} else {
-				if (no.getElemento().compareTo(noNaPosicao.getDireita().getElemento()) == 0) {
-					return noNaPosicao.getDireita();
-				} else {
-					noNaPosicao = noNaPosicao.getDireita();
-					return verifica(no, noNaPosicao);
-				}
-			}
-		} else {
-			if (noNaPosicao.getEsquerda() == null) {
-				return null;
-			} else {
-				if (no.getElemento().compareTo(noNaPosicao.getEsquerda().getElemento()) == 0) {
-					return noNaPosicao.getEsquerda();
-				} else {
-					noNaPosicao = noNaPosicao.getEsquerda();
-					return verifica(no, noNaPosicao);
-				}
-			}
+	public Node<T> remove(T elemento, Node<T> raiz) {
+	//1 vrifica se o nó é nulo
+		
+		if (raiz == null) {
+			return raiz;
 		}
+		//se não achar o elemento, volta reconstruindo a árvore
+		
+		if (raiz.getElemento().compareTo(elemento) > 0) {
+			//se o elemento da raiz for menor, esquerda
+			raiz.setEsquerda(remove(elemento, raiz.getEsquerda()));
+			//esse código reconstrói a árvore, o théo jurou
+			
+		} else if (raiz.getElemento().compareTo(elemento) < 0) {
+			//se o elemento da raiz for maior, direita
+			raiz.setDireita(remove(elemento, raiz.getDireita()));
+			
+		} else {
+			
+			//aqui a gente de fato mexe com o elemento
+			
+			if (raiz.getEsquerda() == null && raiz.getDireita() == null) {
+				return null; //(if da visão transcedental)
+				//se esse nó é uma folha, o nó anterior (pai) não aponta para nada
+			} else if (raiz.getEsquerda() == null) {
+				return raiz.getDireita();
+				
+				/*
+				 * se o nó não é vazio dos dois lados e não tem nada na esquerda ele 
+				 * possui algo na direita, por isso o retono direto
+				 */
+				
+			} else if (raiz.getDireita() == null) {
+				return raiz.getEsquerda(); 
+				
+				//mesma coisa aqui, mas para o outro lado
+				
+			} else {
+				
+				var substitute = this.min(raiz.getDireita());
+				
+				/*
+				 * essa linha de cima é exatamente a mesma que essa aqui
+				 * Node<T> sub = this.min(raiz.getDireita());
+				 * var identifica o tipo de retorno da atribuição e define 
+				 * o tipo que ela vai ter  apartir dali
+				 */
+				
+				raiz.setElemento(substitute.getElemento());
+				
+				raiz.setDireita(remove(substitute.getElemento(), raiz.getDireita()));
+			}
+		} 
+		return raiz;
 	}
+	
+//	public void chamaRemove(T e) {
+//		Node<T> no = new Node<T>(e);
+//		if (no.getElemento().compareTo(this.raiz.getElemento()) == 0) {
+//			
+//		} else {
+//			no = verifica(no, this.raiz);
+//			if (no == null) {
+//				System.out.println("\nO elemento não está na lista");
+//			} else {
+//				System.out.println("\nO elemento " + no.getElemento().toString() + " está na lista");
+//				remove(no);
+//			}
+//		}
+//	}
+//	
+//	 private void remove(Node<T> no) {
+//			Node<T> paiDoNo = paiDoNo(no, this.raiz);
+//			System.out.println("Pai: " + paiDoNo.getElemento().toString());
+//			
+//			if (no.getDireita() == null && no.getEsquerda() == null) {
+//				if (no.getElemento().compareTo(paiDoNo.getElemento()) >= 0) {
+//					paiDoNo.setDireita(null);
+//				} else {
+//					paiDoNo.setEsquerda(null);
+//				}
+//			} else if (no.getDireita() != null && no.getEsquerda() != null) {
+//				
+//			} else {
+//				if (no.getDireita() != null) {
+//					if (no.getElemento().compareTo(paiDoNo.getElemento()) >= 0) {
+//						paiDoNo.setDireita(no.getDireita());
+//					} else {
+//						paiDoNo.setEsquerda(no.getEsquerda());
+//					}
+//				} else {
+//					if (no.getElemento().compareTo(paiDoNo.getElemento()) >= 0) {
+//						paiDoNo.setDireita(no.getDireita());
+//					} else {
+//						paiDoNo.setEsquerda(no.getEsquerda());
+//					}
+//				}
+//			}
+//	}
+//	 
+//	private Node<T> paiDoNo(Node<T> no, Node<T> paiDoNo) {
+//		if (no.getElemento().compareTo(paiDoNo.getElemento()) >= 0) {
+//			if (paiDoNo.getDireita() == no) {
+//				return paiDoNo;
+//			} else {
+//				paiDoNo = paiDoNo.getDireita();
+//				return paiDoNo(no, paiDoNo);
+//			}
+//		} else {
+//			if (paiDoNo.getEsquerda() == no) {
+//				return paiDoNo;
+//			} else {
+//				paiDoNo = paiDoNo.getEsquerda();
+//				return paiDoNo(no, paiDoNo);
+//			}
+//		}
+//		
+//	}
+//
+//	private Node<T> verifica(Node<T> no, Node<T> noNaPosicao) {
+//		if (no.getElemento().compareTo(noNaPosicao.getElemento()) >= 0) {
+//			if (noNaPosicao.getDireita() == null) {
+//				return null;
+//			} else {
+//				if (no.getElemento().compareTo(noNaPosicao.getDireita().getElemento()) == 0) {
+//					return noNaPosicao.getDireita();
+//				} else {
+//					noNaPosicao = noNaPosicao.getDireita();
+//					return verifica(no, noNaPosicao);
+//				}
+//			}
+//		} else {
+//			if (noNaPosicao.getEsquerda() == null) {
+//				return null;
+//			} else {
+//				if (no.getElemento().compareTo(noNaPosicao.getEsquerda().getElemento()) == 0) {
+//					return noNaPosicao.getEsquerda();
+//				} else {
+//					noNaPosicao = noNaPosicao.getEsquerda();
+//					return verifica(no, noNaPosicao);
+//				}
+//			}
+//		}
+//	}
 
 	@Override
 	 public String toString() {
