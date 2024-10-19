@@ -8,25 +8,44 @@ public class Main {
 		
 		Tree<Integer> arvore = new Tree<Integer>();
 		
-		arvore.chamaAdiciona(20);
-		arvore.chamaAdiciona(15);
-		arvore.chamaAdiciona(13);
-		arvore.chamaAdiciona(18);
-		arvore.chamaAdiciona(31);
-		arvore.chamaAdiciona(17);
-		arvore.chamaAdiciona(22);
-		arvore.chamaAdiciona(21);
-		arvore.chamaAdiciona(30); 
-		arvore.chamaAdiciona(1);
+		arvore.chamaAdiciona(200);
+		arvore.chamaAdiciona(150);
+		arvore.chamaAdiciona(130);
+		arvore.chamaAdiciona(180);
+		arvore.chamaAdiciona(310);
+		arvore.chamaAdiciona(170);
+		arvore.chamaAdiciona(220);
+		arvore.chamaAdiciona(210);
+		arvore.chamaAdiciona(320);
+		arvore.chamaAdiciona(100);
+		arvore.chamaAdiciona(240);
+		arvore.chamaAdiciona(320);
+		arvore.chamaAdiciona(90);
+		arvore.chamaAdiciona(110);
+		arvore.chamaAdiciona(160);
+		arvore.chamaAdiciona(111);
 	
-		System.out.println("- - - - - - - - - - - - - - - - ");
-		
-		System.out.println(arvore.toString());
-		
-		System.out.println("- - - - - - - - - - - - - - - - ");
+//		System.out.println("- - - - - - - - - - - - - - - - ");
+//		
+//		System.out.println(arvore.toString());
+//		
+//		System.out.println("- - - - - - - - - - - - - - - - ");
 		
 		arvore.chamaOrdem();
 		
+		//System.out.println(arvore.toString()+"\n");
 		
+		//System.out.println("- - - - - - - - - - - - - - - - ");
+		
+		System.out.print("Raiz: ");
+		arvore.showRaiz();
+		System.out.println("\n");
+		
+		arvore.chamaRemove(180);
+		
+		System.out.println("\nRemovido");
+		arvore.chamaOrdem();
+		
+		//System.out.println(arvore.toString());
 	}
 }

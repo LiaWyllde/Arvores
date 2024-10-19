@@ -12,11 +12,11 @@ public class Node<T extends Comparable<T>> {
 		this.elem = e;
 	}
 
-	public T getElem() {
+	public T getElemento() {
 		return elem;
 	}
 
-	public void setElem(T elem) {
+	public void setElemento(T elem) {
 		this.elem = elem;
 	}
 
